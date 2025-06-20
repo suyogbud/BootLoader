@@ -25,6 +25,19 @@ done:
 
 msg: db "Hello World!", 0
 
+;GDT Implementation
+
+gdt_start:
+  db 0x00000000
+  db 0x00000000
+
+  ;Code segment descriptor
+  dw 0xFFFF ;Limit
+  dw 0x0000 ;Base
+  db 0x00   ;Base
+  db 1
+
 times 510 - ($ - $$) db 0
 
 dw 0xAA55
+
