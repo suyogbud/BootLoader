@@ -32,10 +32,12 @@ gdt_start:
   db 0x00000000
 
   ;Code segment descriptor
-  dw 0xFFFF ;Limit
-  dw 0x0000 ;Base
-  db 0x00   ;Base
-  db 1
+  dw 0xFFFF     ;Limit
+  dw 0x0000     ;Base
+  db 0x00       ;Base
+  db 10011010
+  db 11001111b ;Flags
+
 
 times 510 - ($ - $$) db 0
 
