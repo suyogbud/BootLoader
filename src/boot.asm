@@ -16,7 +16,7 @@ start:
 
 load_PM:
   cli
-  ldgt[gdt_descriptor]
+  lgdt[gdt_descriptor]
   mov eax, cr0
   or al, 1
   mov cr0, eax
@@ -67,6 +67,7 @@ PModeMain:
   out 0x92, al
 
   jmp $
+
 times 510 - ($ - $$) db 0
 
 dw 0xAA55
