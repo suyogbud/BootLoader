@@ -1,5 +1,4 @@
-ENTRY(_start)
-OUTPUT_FORMAT(binary)
+ENTRY(kernel_main) /* or _start if you have that symbol */
 SECTIONS
 {
     . = 0x0100000;
@@ -7,23 +6,19 @@ SECTIONS
     {
         *(.text)
     }
-
     .rodata : ALIGN(4096)
     {
         *(.rodata)
     }
-
     .data : ALIGN(4096)
     {
         *(.data)
     }
-
     .bss : ALIGN(4096)
     {
         *(COMMON)
         *(.bss)
     }
-
     /DISCARD/ :
     {
         *(.comment)
