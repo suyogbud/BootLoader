@@ -5,6 +5,10 @@ CODE_OFFSET equ 0x8
 
 DATA_OFFSET equ 0x10
 
+KERNEL_LOAD_SEG equ 0x1000
+
+KERNEL_START_ADDR equ 0x100000
+
 start:
   cli; Clear Interrupts
   mov ax, 0x00
@@ -14,6 +18,20 @@ start:
   mov sp, 0x7c00
   sti; Enable Interrupts
 
+;Load kernel
+mov bx, KERNEL_LOAD_SEG
+
+mov dh, 0x00
+mov dl, 0x80
+mov cl, 0x02
+mov ch, 0x00
+mov ah, 0x02
+mov al, 8
+
+int 0x13
+
+jc disk_read_error
+
 load_PM:
   cli
   lgdt[gdt_descriptor]
@@ -21,6 +39,9 @@ load_PM:
   or al, 1
   mov cr0, eax
   jmp CODE_OFFSET:PModeMain
+
+disk_read_error:
+  hlt
 
 ;GDT Implementation
 
@@ -66,7 +87,7 @@ PModeMain:
   or al, 2
   out 0x92, al
 
-  jmp $
+  jmp CODE_OFFSET:KERNEL_START_ADDR
 
 times 510 - ($ - $$) db 0
 
